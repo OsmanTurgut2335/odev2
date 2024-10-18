@@ -1,155 +1,108 @@
-import 'package:flutter/material.dart';
+// Ata sınıf: Insan
+class Insan {
+  String isim;
 
+  // Constructor
+  Insan(this.isim);
+
+  // Ekleme fonksiyonu - Overloaded Method (Aşırı Yükleme)
+  void ekle(String eleman) {
+    print('$isim $eleman ekledi.');
+  }
+
+  void ekle(String eleman, String kime) {
+    print('$isim $kime için $eleman ekledi.');
+  }
+}
+
+// Öğrenci sınıfı, Insan'dan türetilmiştir (Inheritance)
+class Ogrenci extends Insan {
+  String bolum;
+
+  Ogrenci(String isim, this.bolum) : super(isim);
+
+  // Ders çalışma fonksiyonu
+  void dersCalis() {
+    print('$isim ders çalışıyor.');
+  }
+
+  // Sınava girme fonksiyonu
+  void sinavaGir() {
+    print('$isim sınava giriyor.');
+  }
+
+  // Method Overriding (Metot Ezme)
+  @override
+  void ekle(String ders) {
+    print('$isim $ders dersini seçti.');
+  }
+}
+
+// Hoca sınıfı, Insan'dan türetilmiştir (Inheritance)
+class Hoca extends Insan {
+  String brans;
+
+  Hoca(String isim, this.brans) : super(isim);
+
+  // Ders anlatma fonksiyonu
+  void dersAnlat() {
+    print('$isim ($brans) ders anlatıyor.');
+  }
+
+  // Sınav yapma fonksiyonu
+  void sinavYap() {
+    print('$isim sınav yapıyor.');
+  }
+
+  // Method Overriding (Metot Ezme)
+  @override
+  void ekle(String ogrenciIsmi) {
+    print('$isim $ogrenciIsmi adlı öğrencinin danışmanı olduğu dersi onayladı.');
+  }
+}
+
+// Sekreter sınıfı, Insan'dan türetilmiştir (Inheritance)
+class Sekreter extends Insan {
+  Sekreter(String isim) : super(isim);
+
+  // Hoca ekleme fonksiyonu
+  void hocaEkle(Hoca hoca) {
+    print('${hoca.isim} adlı hoca eklendi.');
+  }
+
+  // Öğrenci ekleme fonksiyonu
+  void ogrenciEkle(Ogrenci ogrenci) {
+    print('${ogrenci.isim} adlı öğrenci eklendi.');
+  }
+
+  // Method Overriding (Metot Ezme)
+  @override
+  void ekle(String ders, String ogrenciIsmi) {
+    print('$isim $ogrenciIsmi için $ders dersini ekledi.');
+  }
+}
+
+// Main fonksiyonu
 void main() {
-  runApp(ShoppingApp());
-}
+  // Sekreter, Hoca ve Öğrenci nesneleri oluşturuluyor
+  Sekreter sekreter = Sekreter('Ayşe Sekreter');
+  Hoca hoca = Hoca('Mehmet Hoca', 'Matematik');
+  Ogrenci ogrenci = Ogrenci('Ali Öğrenci', 'Bilgisayar Mühendisliği');
 
-class ShoppingApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // Uygulamanın ana widget'ı. Tema ve başlangıç ekranı ayarlanıyor.
-    return MaterialApp(
-      title: 'Alışveriş Sepeti',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ShoppingCartScreen(),
-    );
-  }
-}
+  // Hoca ve Öğrenci ekleniyor
+  sekreter.hocaEkle(hoca);
+  sekreter.ogrenciEkle(ogrenci);
 
-class ShoppingCartScreen extends StatefulWidget {
-  @override
-  _ShoppingCartScreenState createState() => _ShoppingCartScreenState();
-}
+  // Hoca ve öğrenci ders çalışma ve sınav işlemleri
+  hoca.dersAnlat();
+  ogrenci.dersCalis();
 
-class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
-  // Ürünleri tutacak liste
-  List<Product> products = [];
+  hoca.sinavYap();
+  ogrenci.sinavaGir();
 
-  double totalAmount = 0;
-  // İndirim oranı
-  double discount = 0;
-  // Kullanıcının yaşı
-  int age = 0;
+  // Encapsulation: Hoca ders ekleyip, öğrenciye danışmanlık yapıyor
+  hoca.ekle(ogrenci.isim);
 
-  // Kullanıcıdan veri almak için TextEditingController nesneleri
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _ageController = TextEditingController();
-
-  // Ürün ekleme fonksiyonu, ürün listesine ürün ekler ve toplam tutarı günceller
-  void addProduct(String name, double price) {
-    setState(() {
-      products.add(Product(name: name, price: price));
-      totalAmount += price;
-    });
-  }
-
-  // Kullanıcının yaşına göre indirim oranını hesaplayan fonksiyon
-  void calculateDiscount() {
-    setState(() {
-      if (age < 18) {
-        discount = 0.10; // %10 indirim
-      } else if (age >= 18 && age <= 60) {
-        discount = 0.05; // %5 indirim
-      } else if (age > 60) {
-        discount = 0.15; // %15 indirim
-      }
-    });
-  }
-
-  // Bellek yönetimi için text controller'ları serbest bırakıyoruz
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _priceController.dispose();
-    _ageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // Ana arayüz
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Alışveriş Sepeti'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Yaş girişi için TextField
-            TextField(
-              controller: _ageController,
-              decoration: InputDecoration(labelText: 'Yaşınızı girin'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10),
-            // Yaşa göre indirim uygulayan buton
-            ElevatedButton(
-              onPressed: () {
-                age = int.parse(_ageController.text); // Yaşı input'tan alıyoruz
-                calculateDiscount(); // İndirim hesaplanıyor
-              },
-              child: const Text('İndirim Uygula'),
-            ),
-            SizedBox(height: 20),
-            // Ürün adı girişi için TextField
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Ürün Adı'),
-            ),
-            // Ürün fiyatı girişi için TextField
-            TextField(
-              controller: _priceController,
-              decoration: InputDecoration(labelText: 'Ürün Fiyatı'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10),
-            // Ürün ekleme butonu
-            ElevatedButton(
-              onPressed: () {
-                String name = _nameController.text;
-                 double price = double.parse(_priceController.text);
-                addProduct(name, price); // Ürünü sepete ekliyoruz
-                _nameController.clear(); // Girdi alanlarını temizliyoruz
-                _priceController.clear();
-              },
-              child: Text('Ürün EkLe'),
-            ),
-            SizedBox(height: 20),
-
-             Text('Sepetinizdeki Ürünler:'),
-
-            Expanded(
-              child: ListView.builder(
-                itemCount: products.length, // Ürün sayısı kadar döner
-                itemBuilder: (context, index) {
-                  // Her ürün için bir ListTile oluşturuyor
-                  return ListTile(
-                    title: Text('${products[index].name}'),
-                     subtitle: Text('Fiyat: ${products[index].price.toStringAsFixed(2)} TL'),
-                  );
-                },
-              ),
-            ),
-
-            Text('Toplam Tutar: ${totalAmount.toStringAsFixed(2)} TL'),
-
-              Text('İndirimli Tutar: ${(totalAmount - totalAmount * discount).toStringAsFixed(2)} TL'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Ürün sınıfı
-class Product {
-  final String name; // Ürün adı
-  final double price; // Ürün fiyatı
-
-  Product({required this.name, required this.price});
+  // Encapsulation: Sekreter ders ekliyor
+  sekreter.ekle('Fizik', ogrenci.isim);
 }

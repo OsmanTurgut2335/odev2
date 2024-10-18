@@ -1,11 +1,11 @@
 // Ata sınıf: Insan
 class Insan {
-  String isim;
+      String isim;
 
   // Constructor
   Insan(this.isim);
 
-  // Ekleme fonksiyonu - Overloaded Method (Aşırı Yükleme)
+  //   verloaded Method (Aşırı Yükleme)
   void ekle(String eleman) {
     print('$isim $eleman ekledi.');
   }
@@ -26,23 +26,23 @@ class Ogrenci extends Insan {
     print('$isim ders çalışıyor.');
   }
 
-  // Sınava girme fonksiyonu
+    // Sınava girme fonksiyonu
   void sinavaGir() {
     print('$isim sınava giriyor.');
   }
 
-  // Method Overriding (Metot Ezme)
+  // Overriding 
   @override
   void ekle(String ders) {
     print('$isim $ders dersini seçti.');
   }
 }
 
-// Hoca sınıfı, Insan'dan türetilmiştir (Inheritance)
+// Hoca sınıfı, insadan türetilmiştir (Inheritance)
 class Hoca extends Insan {
-  String brans;
+   String brans;
 
-  Hoca(String isim, this.brans) : super(isim);
+    Hoca(String isim, this.brans) : super(isim);
 
   // Ders anlatma fonksiyonu
   void dersAnlat() {
@@ -56,8 +56,8 @@ class Hoca extends Insan {
 
   // Method Overriding (Metot Ezme)
   @override
-  void ekle(String ogrenciIsmi) {
-    print('$isim $ogrenciIsmi adlı öğrencinin danışmanı olduğu dersi onayladı.');
+   void ekle(String ogrenciIsmi) {
+     print('$isim $ogrenciIsmi adlı öğrencinin danışmanı olduğu dersi onayladı.');
   }
 }
 
@@ -86,12 +86,12 @@ class Sekreter extends Insan {
 void main() {
   // Sekreter, Hoca ve Öğrenci nesneleri oluşturuluyor
   Sekreter sekreter = Sekreter('Ayşe Sekreter');
-  Hoca hoca = Hoca('Mehmet Hoca', 'Matematik');
-  Ogrenci ogrenci = Ogrenci('Ali Öğrenci', 'Bilgisayar Mühendisliği');
+    Hoca hoca = Hoca('Mehmet Hoca', 'Matematik');
+     Ogrenci ogrenci = Ogrenci('Ali Öğrenci', 'Bilgisayar Mühendisliği');
 
-  // Hoca ve Öğrenci ekleniyor
-  sekreter.hocaEkle(hoca);
-  sekreter.ogrenciEkle(ogrenci);
+   // Hoca ve Öğrenci ekleniyor
+      sekreter.hocaEkle(hoca);
+      sekreter.ogrenciEkle(ogrenci);
 
   // Hoca ve öğrenci ders çalışma ve sınav işlemleri
   hoca.dersAnlat();
